@@ -1994,12 +1994,6 @@ namespace rsx
 			u16 dst_w = dst.clip_width;
 			u16 dst_h = dst.clip_height;
 
-			if (!src_w || !src_h || !dst_w || !dst_h)
-			{
-				LOG_ERROR(RSX, "Blit engine request failed because of empty region");
-				return true;
-			}
-
 			//Check if src/dst are parts of render targets
 			auto dst_subres = m_rtts.get_surface_subresource_if_applicable(dst_address, dst.width, dst.clip_height, dst.pitch, true, false, false);
 			dst_is_render_target = dst_subres.surface != nullptr;
@@ -2394,9 +2388,7 @@ namespace rsx
 <<<<<<< HEAD
 				const bool notify = !cached_dest->is_locked();
 				const u32 mem_base = dst_area.y1 * dst.pitch;
-				const u32 mem_length = (dst.clip_height == 1)?
-					dst.clip_width * (dst_is_argb8? 4 : 2) :    // Lock full rows if its a rectangular section
-					dst.pitch * dst.clip_height;                // Lock only part of fist row if simple 1D array
+				const u32 mem_length = dst.pitch * dst.clip_height;
 
 				lock.upgrade();
 

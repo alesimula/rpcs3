@@ -61,6 +61,7 @@ namespace rsx
 
 		template <typename T = void>
 <<<<<<< HEAD
+<<<<<<< HEAD
 		T* get(u32 offset = 0, bool no_sync = false)
 		{
 			if (contiguous)
@@ -156,6 +157,11 @@ namespace rsx
 					base_offset += block.second;
 				}
 			}
+=======
+		T* get(u32 offset = 0) const
+		{
+			return (T*)((u8*)_ptr + offset);
+>>>>>>> parent of fbf658124... rsx: Fix segmented memory access for rsx::super_ptr
 =======
 		T* get(u32 offset = 0) const
 		{

@@ -42,9 +42,12 @@ namespace rsx
 				*first = cpu_address_base + confirmed_range.first;
 				*last = cpu_address_base + valid_limit - 4;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 				locked_memory_ptr.flush(confirmed_range.first, 4);
 				locked_memory_ptr.flush(valid_limit - 4, 4);
+=======
+>>>>>>> parent of fbf658124... rsx: Fix segmented memory access for rsx::super_ptr
 =======
 >>>>>>> parent of fbf658124... rsx: Fix segmented memory access for rsx::super_ptr
 			}
@@ -237,7 +240,11 @@ namespace rsx
 
 		template <typename T = void>
 <<<<<<< HEAD
+<<<<<<< HEAD
 		T* get_raw_ptr(u32 offset = 0, bool no_sync = false)
+=======
+		T* get_raw_ptr(u32 offset = 0) const
+>>>>>>> parent of fbf658124... rsx: Fix segmented memory access for rsx::super_ptr
 =======
 		T* get_raw_ptr(u32 offset = 0) const
 >>>>>>> parent of fbf658124... rsx: Fix segmented memory access for rsx::super_ptr
@@ -270,11 +277,14 @@ namespace rsx
 		}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 		void flush_io(u32 offset = 0, u32 len = 0) const
 		{
 			locked_memory_ptr.flush(offset, len);
 		}
 
+=======
+>>>>>>> parent of fbf658124... rsx: Fix segmented memory access for rsx::super_ptr
 =======
 >>>>>>> parent of fbf658124... rsx: Fix segmented memory access for rsx::super_ptr
 		std::pair<u32, u32> get_confirmed_range() const

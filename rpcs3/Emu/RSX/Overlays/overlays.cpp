@@ -30,7 +30,7 @@ namespace rsx
 
 		void overlay::refresh()
 		{
-			if (auto rsxthr = rsx::get_current_renderer())
+			if (auto rsxthr = fxm::get<GSRender>())
 			{
 				const auto now = get_system_time() - 1000000;
 				if ((now - rsxthr->last_flip_time) > min_refresh_duration_us)

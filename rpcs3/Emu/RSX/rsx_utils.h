@@ -4,8 +4,11 @@
 #include "Utilities/geometry.h"
 #include "gcm_enums.h"
 #include <atomic>
+<<<<<<< HEAD
 #include <memory>
 #include <bitset>
+=======
+>>>>>>> parent of 8fcd5c1e5... rsx: Texture cache fixes
 
 // TODO: replace the code below by #include <optional> when C++17 or newer will be used
 #include <optional.hpp>
@@ -22,9 +25,6 @@ extern "C"
 
 namespace rsx
 {
-	class thread;
-	extern thread* g_current_renderer;
-
 	//Base for resources with reference counting
 	struct ref_counted
 	{
@@ -33,6 +33,7 @@ namespace rsx
 		void reset_refs() { deref_count = 0; }
 	};
 
+<<<<<<< HEAD
 	//Weak pointer without lock semantics
 	//Backed by a real shared_ptr for non-rsx memory
 	//Backed by a global shared pool for rsx memory
@@ -201,6 +202,8 @@ namespace rsx
 		}
 	};
 
+=======
+>>>>>>> parent of 8fcd5c1e5... rsx: Texture cache fixes
 	//Holds information about a framebuffer
 	struct gcm_framebuffer_info
 	{
@@ -464,9 +467,6 @@ namespace rsx
 
 	std::array<float, 4> get_constant_blend_colors();
 
-	// Acquire memory mirror with r/w permissions
-	weak_ptr get_super_ptr(u32 addr, u32 size);
-
 	/**
 	 * Shuffle texel layout from xyzw to wzyx
 	 * TODO: Variable src/dst and optional se conversion
@@ -722,6 +722,7 @@ namespace rsx
 		result.a = ((colorref >> 24) & 0xFF) / 255.f;
 		return result;
 	}
+<<<<<<< HEAD
 
 	static inline thread* get_current_renderer()
 	{
@@ -764,4 +765,6 @@ namespace rsx
 			}
 		}
 	}
+=======
+>>>>>>> parent of 8fcd5c1e5... rsx: Texture cache fixes
 }

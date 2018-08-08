@@ -277,6 +277,33 @@ namespace vk
 			sync_timestamp = get_system_time();
 		}
 
+<<<<<<< HEAD
+=======
+		template<typename T, bool swapped>
+		void do_memory_transfer(void *pixels_dst, const void *pixels_src, u32 channels_count)
+		{
+			if (sizeof(T) == 1)
+				memcpy(pixels_dst, pixels_src, cpu_address_range);
+			else
+			{
+				const u32 block_size = width * height * channels_count;
+
+				if (swapped)
+				{
+					auto typed_dst = (be_t<T> *)pixels_dst;
+					auto typed_src = (T *)pixels_src;
+
+					for (u32 px = 0; px < block_size; ++px)
+						typed_dst[px] = typed_src[px];
+				}
+				else
+				{
+					memcpy(pixels_dst, pixels_src, block_size * sizeof(T));
+				}
+			}
+		}
+
+>>>>>>> parent of 8fcd5c1e5... rsx: Texture cache fixes
 		bool flush(vk::command_buffer& cmd, VkQueue submit_queue)
 		{
 			if (flushed) return true;
@@ -299,6 +326,7 @@ namespace vk
 			verify(HERE), real_pitch > 0;
 			flushed = true;
 
+<<<<<<< HEAD
 			const auto valid_range = get_confirmed_range();
 			void* pixels_src = dma_buffer->map(valid_range.first, valid_range.second);
 			void* pixels_dst = get_raw_ptr(valid_range.first, true);
@@ -306,6 +334,55 @@ namespace vk
 			if (real_pitch >= rsx_pitch || valid_range.second <= rsx_pitch)
 			{
 				memcpy(pixels_dst, pixels_src, valid_range.second);
+=======
+			void* pixels_src = dma_buffer->map(0, cpu_address_range);
+			void* pixels_dst = vm::base(cpu_address_base);
+
+			const auto texel_layout = vk::get_format_element_size(vram_texture->info.format);
+			const auto elem_size = texel_layout.first;
+			const auto channel_count = texel_layout.second;
+
+			//We have to do our own byte swapping since the driver doesnt do it for us
+			if (real_pitch == rsx_pitch)
+			{
+				bool is_depth_format = true;
+				switch (vram_texture->info.format)
+				{
+				case VK_FORMAT_D32_SFLOAT_S8_UINT:
+					rsx::convert_le_f32_to_be_d24(pixels_dst, pixels_src, cpu_address_range >> 2, 1);
+					break;
+				case VK_FORMAT_D24_UNORM_S8_UINT:
+					rsx::convert_le_d24x8_to_be_d24x8(pixels_dst, pixels_src, cpu_address_range >> 2, 1);
+					break;
+				default:
+					is_depth_format = false;
+					break;
+				}
+
+				if (!is_depth_format)
+				{
+					switch (elem_size)
+					{
+					default:
+						LOG_ERROR(RSX, "Invalid element width %d", elem_size);
+					case 1:
+						do_memory_transfer<u8, false>(pixels_dst, pixels_src, channel_count);
+						break;
+					case 2:
+						if (pack_unpack_swap_bytes)
+							do_memory_transfer<u16, true>(pixels_dst, pixels_src, channel_count);
+						else
+							do_memory_transfer<u16, false>(pixels_dst, pixels_src, channel_count);
+						break;
+					case 4:
+						if (pack_unpack_swap_bytes)
+							do_memory_transfer<u32, true>(pixels_dst, pixels_src, channel_count);
+						else
+							do_memory_transfer<u32, false>(pixels_dst, pixels_src, channel_count);
+						break;
+					}
+				}
+>>>>>>> parent of 8fcd5c1e5... rsx: Texture cache fixes
 			}
 			else
 			{
@@ -314,15 +391,29 @@ namespace vk
 					fmt::throw_exception("Unreachable" HERE);
 				}
 
+<<<<<<< HEAD
 				const u32 num_rows = valid_range.second / rsx_pitch;
 				auto _src = (u8*)pixels_src;
 				auto _dst = (u8*)pixels_dst;
+=======
+				u16 row_length = u16(width * channel_count);
+				rsx::scale_image_nearest(pixels_dst, pixels_src, row_length, height, rsx_pitch, real_pitch, elem_size, samples_u, samples_v, pack_unpack_swap_bytes);
+>>>>>>> parent of 8fcd5c1e5... rsx: Texture cache fixes
 
 				for (u32 y = 0; y < num_rows; ++y)
 				{
+<<<<<<< HEAD
 					memcpy(_dst, _src, real_pitch);
 					_src += real_pitch;
 					_dst += real_pitch;
+=======
+				case VK_FORMAT_D32_SFLOAT_S8_UINT:
+					rsx::convert_le_f32_to_be_d24(pixels_dst, pixels_dst, cpu_address_range >> 2, 1);
+					break;
+				case VK_FORMAT_D24_UNORM_S8_UINT:
+					rsx::convert_le_d24x8_to_be_d24x8(pixels_dst, pixels_dst, cpu_address_range >> 2, 1);
+					break;
+>>>>>>> parent of 8fcd5c1e5... rsx: Texture cache fixes
 				}
 			}
 
@@ -339,6 +430,24 @@ namespace vk
 			pack_unpack_swap_bytes = swap_bytes;
 		}
 
+<<<<<<< HEAD
+=======
+		void reprotect(utils::protection prot)
+		{
+			//Reset properties and protect again
+			flushed = false;
+			synchronized = false;
+			sync_timestamp = 0ull;
+
+			protect(prot);
+		}
+
+		void invalidate_cached()
+		{
+			synchronized = false;
+		}
+
+>>>>>>> parent of 8fcd5c1e5... rsx: Texture cache fixes
 		bool is_synchronized() const
 		{
 			return synchronized;
@@ -861,7 +970,7 @@ namespace vk
 			else
 			{
 				//TODO: Confirm byte swap patterns
-				//NOTE: Protection is handled by the caller
+				region.protect(utils::protection::no);
 				region.set_unpack_swap_bytes((aspect_flags & VK_IMAGE_ASPECT_COLOR_BIT) == VK_IMAGE_ASPECT_COLOR_BIT);
 				no_access_range = region.get_min_max(no_access_range);
 			}
@@ -988,7 +1097,7 @@ namespace vk
 				if (tex.is_dirty())
 					continue;
 
-				if (!tex.overlaps(rsx_address, rsx::overlap_test_bounds::full_range))
+				if (!tex.overlaps(rsx_address, true))
 					continue;
 
 				if ((rsx_address + rsx_size - tex.get_section_base()) <= tex.get_section_size())

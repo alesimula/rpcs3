@@ -329,9 +329,12 @@ namespace rsx
 		GcmTileInfo tiles[limits::tiles_count];
 		GcmZcullInfo zculls[limits::zculls_count];
 
+<<<<<<< HEAD
 		// Super memory map (mapped block with r/w permissions)
 		std::pair<u32, std::shared_ptr<u8>> super_memory_map;
 
+=======
+>>>>>>> parent of 8fcd5c1e5... rsx: Texture cache fixes
 		bool capture_current_frame = false;
 		void capture_frame(const std::string &name);
 

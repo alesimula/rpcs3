@@ -265,6 +265,7 @@ namespace vk
 
 	void set_current_renderer(const vk::render_device &device)
 	{
+<<<<<<< HEAD
 		g_current_renderer = &device;
 		g_cb_no_interrupt_flag.store(false);
 		g_drv_no_primitive_restart_flag = false;
@@ -275,6 +276,10 @@ namespace vk
 		g_driver_vendor = driver_vendor::unknown;
 
 		const auto gpu_name = g_current_renderer->gpu().name();
+=======
+		g_current_renderer = device;
+		const auto gpu_name = g_current_renderer.gpu().name();
+>>>>>>> parent of 8fcd5c1e5... rsx: Texture cache fixes
 
 		//Radeon fails to properly handle degenerate primitives if primitive restart is enabled
 		//One has to choose between using degenerate primitives or primitive restart to break up lists but not both

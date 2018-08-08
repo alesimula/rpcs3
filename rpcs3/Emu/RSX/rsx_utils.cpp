@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "rsx_utils.h"
 #include "rsx_methods.h"
-#include "RSXThread.h"
 #include "Emu/RSX/GCM.h"
 #include "Common/BufferUtils.h"
 #include "Overlays/overlays.h"
@@ -76,6 +75,7 @@ namespace rsx
 		}
 	}
 
+<<<<<<< HEAD
 	weak_ptr get_super_ptr(u32 addr, u32 len)
 	{
 		verify(HERE), g_current_renderer;
@@ -145,6 +145,8 @@ namespace rsx
 		return {};
 	}
 
+=======
+>>>>>>> parent of 8fcd5c1e5... rsx: Texture cache fixes
 	/* Fast image scaling routines
 	* Only uses fast nearest scaling and integral scaling factors
 	* T - Dst type

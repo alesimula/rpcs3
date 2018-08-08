@@ -429,7 +429,11 @@ protected:
 	void notify_tile_unbound(u32 tile) override;
 
 	bool on_access_violation(u32 address, bool is_writing) override;
+<<<<<<< HEAD
 	void on_invalidate_memory_range(u32 address_base, u32 size) override;
 
 	bool on_decompiler_task() override;
+=======
+	void on_notify_memory_unmapped(u32 address_base, u32 size) override;
+>>>>>>> parent of b957eac6e... rsx: Avoid calling any blocking callbacks from threads that are not rsx::thread
 };

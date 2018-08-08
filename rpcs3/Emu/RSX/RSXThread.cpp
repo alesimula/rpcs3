@@ -1341,6 +1341,7 @@ namespace rsx
 		}
 	}
 
+<<<<<<< HEAD
 	void thread::do_local_task(FIFO_state state)
 	{
 		if (!in_begin_end && state != FIFO_state::lock_wait)
@@ -1359,6 +1360,8 @@ namespace rsx
 		}
 	}
 
+=======
+>>>>>>> parent of b957eac6e... rsx: Avoid calling any blocking callbacks from threads that are not rsx::thread
 	//std::future<void> thread::add_internal_task(std::function<bool()> callback)
 	//{
 	//	std::lock_guard<shared_mutex> lock{ m_mtx_task };
@@ -2418,6 +2421,7 @@ namespace rsx
 		check_zcull_status(false);
 	}
 
+<<<<<<< HEAD
 	void thread::on_notify_memory_unmapped(u32 base_address, u32 size)
 	{
 		{
@@ -2446,6 +2450,8 @@ namespace rsx
 		m_invalidated_memory_ranges.push_back({ base_address, size });
 	}
 
+=======
+>>>>>>> parent of b957eac6e... rsx: Avoid calling any blocking callbacks from threads that are not rsx::thread
 	//Pause/cont wrappers for FIFO ctrl. Never call this from rsx thread itself!
 	void thread::pause()
 	{

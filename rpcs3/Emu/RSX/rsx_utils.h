@@ -120,7 +120,7 @@ namespace rsx
 					{
 						// Head
 						write_offset = (offset - base_offset);
-						write_length = std::min<u32>(block.second - write_offset, (u32)remaining_bytes);
+						write_length = std::min<u32>(block.second - write_offset, remaining_bytes);
 					}
 					else if (base_offset > offset && block_end <= write_end)
 					{
@@ -132,7 +132,7 @@ namespace rsx
 					{
 						// Tail
 						write_offset = 0;
-						write_length = (u32)remaining_bytes;
+						write_length = remaining_bytes;
 					}
 					else
 					{

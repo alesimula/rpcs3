@@ -849,7 +849,7 @@ bool VKGSRender::on_access_violation(u32 address, bool is_writing)
 	return false;
 }
 
-void VKGSRender::on_invalidate_memory_range(u32 address_base, u32 size)
+void VKGSRender::on_notify_memory_unmapped(u32 address_base, u32 size)
 {
 	std::lock_guard<shared_mutex> lock(m_secondary_cb_guard);
 	if (m_texture_cache.invalidate_range(address_base, size, true, true, false,
@@ -2062,7 +2062,11 @@ void VKGSRender::process_swap_request(frame_context_t *ctx, bool free_resources)
 	ctx->swap_command_buffer = nullptr;
 }
 
+<<<<<<< HEAD
 void VKGSRender::do_local_task(rsx::FIFO_state state)
+=======
+void VKGSRender::do_local_task(bool /*idle*/)
+>>>>>>> parent of b957eac6e... rsx: Avoid calling any blocking callbacks from threads that are not rsx::thread
 {
 	if (m_flush_requests.pending())
 	{

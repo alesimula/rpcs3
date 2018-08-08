@@ -62,7 +62,11 @@ namespace rsx
 		template <typename T = void>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		T* get(u32 offset = 0, bool no_sync = false)
+=======
+		T* get(u32 offset = 0)
+>>>>>>> parent of d2bf04796... Optimized cached write-through
 		{
 			if (contiguous)
 			{
@@ -70,7 +74,7 @@ namespace rsx
 			}
 			else
 			{
-				if (!synchronized && !no_sync)
+				if (!synchronized)
 					sync();
 
 				return (T*)(io_cache.data() + offset);
@@ -92,23 +96,15 @@ namespace rsx
 			synchronized = true;
 		}
 
-		void flush(u32 offset = 0, u32 len = 0) const
+		void flush() const
 		{
 			if (contiguous)
 				return;
 
 			u8* src = (u8*)io_cache.data();
-
-			if (!offset && (!len || len == io_cache.size()))
+			for (const auto &block : _blocks)
 			{
-				for (const auto &block : _blocks)
-				{
-					memcpy(block.first.get(), src, block.second);
-					src += block.second;
-				}
-			}
-			else
-			{
+<<<<<<< HEAD
 				auto remaining_bytes = len? len : io_cache.size() - offset;
 				const auto write_end = remaining_bytes + offset;
 
@@ -156,6 +152,10 @@ namespace rsx
 
 					base_offset += block.second;
 				}
+=======
+				memcpy(block.first.get(), src, block.second);
+				src += block.second;
+>>>>>>> parent of d2bf04796... Optimized cached write-through
 			}
 =======
 		T* get(u32 offset = 0) const

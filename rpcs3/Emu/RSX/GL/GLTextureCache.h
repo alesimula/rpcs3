@@ -491,7 +491,7 @@ namespace gl
 
 <<<<<<< HEAD
 			const auto valid_range = get_confirmed_range();
-			void *dst = get_raw_ptr(valid_range.first, true);
+			void *dst = get_raw_ptr(valid_range.first);
 
 =======
 >>>>>>> parent of 8fcd5c1e5... rsx: Texture cache fixes
@@ -597,11 +597,15 @@ namespace gl
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			flush_io(valid_range.first, valid_range.second);
 =======
 >>>>>>> parent of fbf658124... rsx: Fix segmented memory access for rsx::super_ptr
 =======
 >>>>>>> parent of fbf658124... rsx: Fix segmented memory access for rsx::super_ptr
+=======
+			flush_io();
+>>>>>>> parent of d2bf04796... Optimized cached write-through
 			glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
 			glBindBuffer(GL_PIXEL_PACK_BUFFER, GL_NONE);
 

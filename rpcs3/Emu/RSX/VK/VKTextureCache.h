@@ -329,7 +329,7 @@ namespace vk
 <<<<<<< HEAD
 			const auto valid_range = get_confirmed_range();
 			void* pixels_src = dma_buffer->map(valid_range.first, valid_range.second);
-			void* pixels_dst = get_raw_ptr(valid_range.first, true);
+			void* pixels_dst = get_raw_ptr(valid_range.first);
 
 			if (real_pitch >= rsx_pitch || valid_range.second <= rsx_pitch)
 			{
@@ -419,11 +419,15 @@ namespace vk
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			flush_io(valid_range.first, valid_range.second);
 =======
 >>>>>>> parent of fbf658124... rsx: Fix segmented memory access for rsx::super_ptr
 =======
 >>>>>>> parent of fbf658124... rsx: Fix segmented memory access for rsx::super_ptr
+=======
+			flush_io();
+>>>>>>> parent of d2bf04796... Optimized cached write-through
 			dma_buffer->unmap();
 			reset_write_statistics();
 

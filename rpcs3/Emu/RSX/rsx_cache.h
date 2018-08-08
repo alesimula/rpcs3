@@ -36,20 +36,24 @@ namespace rsx
 			if (locked_memory_ptr)
 			{
 				const u32 valid_limit = (confirmed_range.second) ? confirmed_range.first + confirmed_range.second : cpu_address_range;
-				u32* first = locked_memory_ptr.get<u32>(confirmed_range.first, true);
-				u32* last = locked_memory_ptr.get<u32>(valid_limit - 4, true);
+				u32* first = locked_memory_ptr.get<u32>(confirmed_range.first);
+				u32* last = locked_memory_ptr.get<u32>(valid_limit - 4);
 
 				*first = cpu_address_base + confirmed_range.first;
 				*last = cpu_address_base + valid_limit - 4;
 <<<<<<< HEAD
 <<<<<<< HEAD
 
+<<<<<<< HEAD
 				locked_memory_ptr.flush(confirmed_range.first, 4);
 				locked_memory_ptr.flush(valid_limit - 4, 4);
 =======
 >>>>>>> parent of fbf658124... rsx: Fix segmented memory access for rsx::super_ptr
 =======
 >>>>>>> parent of fbf658124... rsx: Fix segmented memory access for rsx::super_ptr
+=======
+				locked_memory_ptr.flush();
+>>>>>>> parent of d2bf04796... Optimized cached write-through
 			}
 		}
 =======
@@ -241,6 +245,7 @@ namespace rsx
 		template <typename T = void>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		T* get_raw_ptr(u32 offset = 0, bool no_sync = false)
 =======
 		T* get_raw_ptr(u32 offset = 0) const
@@ -248,9 +253,12 @@ namespace rsx
 =======
 		T* get_raw_ptr(u32 offset = 0) const
 >>>>>>> parent of fbf658124... rsx: Fix segmented memory access for rsx::super_ptr
+=======
+		T* get_raw_ptr(u32 offset = 0)
+>>>>>>> parent of d2bf04796... Optimized cached write-through
 		{
 			verify(HERE), locked_memory_ptr;
-			return locked_memory_ptr.get<T>(offset, no_sync);
+			return locked_memory_ptr.get<T>(offset);
 		}
 
 		bool test_memory_head() const
@@ -278,9 +286,13 @@ namespace rsx
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		void flush_io(u32 offset = 0, u32 len = 0) const
+=======
+		void flush_io() const
+>>>>>>> parent of d2bf04796... Optimized cached write-through
 		{
-			locked_memory_ptr.flush(offset, len);
+			locked_memory_ptr.flush();
 		}
 
 =======

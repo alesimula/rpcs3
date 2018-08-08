@@ -37,60 +37,21 @@ namespace rsx
 	//Weak pointer without lock semantics
 	//Backed by a real shared_ptr for non-rsx memory
 	//Backed by a global shared pool for rsx memory
-	class weak_ptr
+	struct weak_ptr
 	{
-	public:
-		using memory_block_t = std::pair<std::shared_ptr<u8>, u32>;
+		void* _ptr;
+		std::shared_ptr<u8> _extern;
 
-	private:
-		void* _ptr = nullptr;
-		std::vector<memory_block_t> _blocks;
-		std::vector<u8> io_cache;
-		bool contiguous = true;
-		bool synchronized = true;
-
-	public:
 		weak_ptr(void* raw, bool is_rsx_mem = true)
 		{
 			_ptr = raw;
-
-			if (!is_rsx_mem)
-			{
-				_blocks.push_back({});
-				_blocks.back().first.reset((u8*)raw);
-			}
+			if (!is_rsx_mem) _extern.reset((u8*)raw);
 		}
 
 		weak_ptr(std::shared_ptr<u8>& block)
 		{
-			_blocks.push_back({ block, 0 });
-			_ptr = block.get();
-		}
-
-		weak_ptr(std::vector<memory_block_t>& blocks)
-		{
-			verify(HERE), blocks.size() > 0;
-
-			_blocks = std::move(blocks);
-			_ptr = nullptr;
-
-			if (blocks.size() == 1)
-			{
-				_ptr = _blocks[0].first.get();
-				contiguous = true;
-			}
-			else
-			{
-				u32 block_length = 0;
-				for (const auto &block : _blocks)
-				{
-					block_length += block.second;
-				}
-
-				io_cache.resize(block_length);
-				contiguous = false;
-				synchronized = false;
-			}
+			_extern = block;
+			_ptr = _extern.get();
 		}
 
 		weak_ptr()
@@ -99,6 +60,7 @@ namespace rsx
 		}
 
 		template <typename T = void>
+<<<<<<< HEAD
 		T* get(u32 offset = 0, bool no_sync = false)
 		{
 			if (contiguous)
@@ -194,11 +156,16 @@ namespace rsx
 					base_offset += block.second;
 				}
 			}
+=======
+		T* get(u32 offset = 0) const
+		{
+			return (T*)((u8*)_ptr + offset);
+>>>>>>> parent of fbf658124... rsx: Fix segmented memory access for rsx::super_ptr
 		}
 
 		operator bool() const
 		{
-			return (_ptr != nullptr || _blocks.size() > 1);
+			return (_ptr != nullptr);
 		}
 	};
 

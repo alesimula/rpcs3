@@ -41,9 +41,12 @@ namespace rsx
 
 				*first = cpu_address_base + confirmed_range.first;
 				*last = cpu_address_base + valid_limit - 4;
+<<<<<<< HEAD
 
 				locked_memory_ptr.flush(confirmed_range.first, 4);
 				locked_memory_ptr.flush(valid_limit - 4, 4);
+=======
+>>>>>>> parent of fbf658124... rsx: Fix segmented memory access for rsx::super_ptr
 			}
 		}
 =======
@@ -233,13 +236,17 @@ namespace rsx
 <<<<<<< HEAD
 
 		template <typename T = void>
+<<<<<<< HEAD
 		T* get_raw_ptr(u32 offset = 0, bool no_sync = false)
+=======
+		T* get_raw_ptr(u32 offset = 0) const
+>>>>>>> parent of fbf658124... rsx: Fix segmented memory access for rsx::super_ptr
 		{
 			verify(HERE), locked_memory_ptr;
 			return locked_memory_ptr.get<T>(offset, no_sync);
 		}
 
-		bool test_memory_head()
+		bool test_memory_head() const
 		{
 			if (!locked_memory_ptr)
 			{
@@ -250,7 +257,7 @@ namespace rsx
 			return (*first == (cpu_address_base + confirmed_range.first));
 		}
 
-		bool test_memory_tail()
+		bool test_memory_tail() const
 		{
 			if (!locked_memory_ptr)
 			{
@@ -262,11 +269,14 @@ namespace rsx
 			return (*last == (cpu_address_base + valid_limit - 4));
 		}
 
+<<<<<<< HEAD
 		void flush_io(u32 offset = 0, u32 len = 0) const
 		{
 			locked_memory_ptr.flush(offset, len);
 		}
 
+=======
+>>>>>>> parent of fbf658124... rsx: Fix segmented memory access for rsx::super_ptr
 		std::pair<u32, u32> get_confirmed_range() const
 		{
 			if (confirmed_range.second == 0)

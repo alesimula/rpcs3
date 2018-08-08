@@ -417,7 +417,10 @@ namespace vk
 				}
 			}
 
+<<<<<<< HEAD
 			flush_io(valid_range.first, valid_range.second);
+=======
+>>>>>>> parent of fbf658124... rsx: Fix segmented memory access for rsx::super_ptr
 			dma_buffer->unmap();
 			reset_write_statistics();
 

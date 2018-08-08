@@ -595,7 +595,10 @@ namespace gl
 				}
 			}
 
+<<<<<<< HEAD
 			flush_io(valid_range.first, valid_range.second);
+=======
+>>>>>>> parent of fbf658124... rsx: Fix segmented memory access for rsx::super_ptr
 			glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
 			glBindBuffer(GL_PIXEL_PACK_BUFFER, GL_NONE);
 

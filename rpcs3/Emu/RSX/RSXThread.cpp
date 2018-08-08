@@ -1346,7 +1346,11 @@ namespace rsx
 	{
 		if (!in_begin_end && state != FIFO_state::lock_wait)
 		{
+<<<<<<< HEAD
 			if (!m_invalidated_memory_ranges.empty())
+=======
+			for (const auto& range : m_invalidated_memory_ranges)
+>>>>>>> parent of 92b5a705d... fixup - locking
 			{
 				writer_lock lock(m_mtx_task);
 
@@ -1355,8 +1359,12 @@ namespace rsx
 					on_invalidate_memory_range(range.first, range.second);
 				}
 
+<<<<<<< HEAD
 				m_invalidated_memory_ranges.clear();
 			}
+=======
+			m_invalidated_memory_ranges.clear();
+>>>>>>> parent of 92b5a705d... fixup - locking
 		}
 	}
 
@@ -2422,6 +2430,7 @@ namespace rsx
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	void thread::on_notify_memory_unmapped(u32 base_address, u32 size)
 	{
 		{
@@ -2448,6 +2457,11 @@ namespace rsx
 
 		writer_lock lock(m_mtx_task);
 		m_invalidated_memory_ranges.push_back({ base_address, size });
+=======
+	void thread::on_notify_memory_unmapped(u32 base_address, u32 size)
+	{
+		m_invalidated_memory_ranges.push_back({ base_address, size });
+>>>>>>> parent of 92b5a705d... fixup - locking
 	}
 
 =======
